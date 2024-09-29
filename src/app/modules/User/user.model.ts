@@ -38,4 +38,6 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
   },
 });
 
+
+
 export const User = mongoose.model<IUser>('User', userSchema);

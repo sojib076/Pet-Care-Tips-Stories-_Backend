@@ -1,4 +1,5 @@
 
+
 export interface IUser {
   name: string;
   img: string;
@@ -9,3 +10,4 @@ export interface IUser {
   social: boolean;
 
 }
+

@@ -7,6 +7,9 @@ import { User } from '../User/user.model';
 import { USER_ROLE } from '../User/user.utils';
 import { TLoginUser, typeRegister } from './auth.interface';
 import { createToken } from './auth.utils';
+import { sendEmail } from '../../utils/sendEmail';
+import { userController } from '../User/user.controller';
+import { Request } from "express";
 
 const loginUser = async (payload: TLoginUser) => {
   const user = await User.findOne({ email: payload.email });
@@ -32,6 +35,7 @@ const loginUser = async (payload: TLoginUser) => {
       email: user.email,
       role: user.role,
       _id: user._id,
+      img: user.img,
     };
 
     const accessToken = createToken(
@@ -84,6 +88,7 @@ const googleLogin = async (userData: { name: string; email: string; role: string
       name: user.name,
       email: user.email,
       role: user.role,
+      img: user.img,
     };
 
     const accessToken = createToken(
@@ -108,6 +113,7 @@ const googleLogin = async (userData: { name: string; email: string; role: string
       name: user.name,
       email: user.email,
       role: user.role,
+      img: user.img,
     };
 
     const accessToken = createToken(
@@ -139,10 +145,65 @@ const registerGoogleUser = async (userData: { name: string; email: string; role:
 
   return user;
 };
+const forgetPassword = async (email:string) => {
+
+  const userEmail = email;
+  
 
 
+  const user = await User.findOne({ email: userEmail });
+    if (user?.social) {
+      throw new AppError(httpStatus.NOT_FOUND, 'User Already Login with Google');
+      
+    }
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+
+  const jwtPayload = {
+    userId: user.id,
+    role: user?.role || 'user',
+    email: user.email,
+  };
+
+  const resetToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    '10m',
+  );
+
+  const resetUILink = `${config.reset_pass_ui_link}?id=${user.id}&token=${resetToken} `;
+
+  sendEmail(user.email, resetUILink);
+};
+
+const resetPassword = async (req:Request) => {
+
+  const { password, userId } = req.body;
+
+
+
+  
+  const user = await User.findOne({ _id: userId });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  user.password = await bcryptJs.hash(
+    password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  await user.save();
+  return user;
+
+
+
+};
 export const AuthServices = {
+  forgetPassword,
   loginUser,
   registerUser,
   googleLogin,
+  resetPassword
 };
