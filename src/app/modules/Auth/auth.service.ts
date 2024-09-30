@@ -5,10 +5,10 @@ import AppError from '../../errors/AppError';
 import bcryptJs from 'bcryptjs';
 import { User } from '../User/user.model';
 import { USER_ROLE } from '../User/user.utils';
-import { TLoginUser, typeRegister } from './auth.interface';
+import { TLoginUser, } from './auth.interface';
 import { createToken } from './auth.utils';
 import { sendEmail } from '../../utils/sendEmail';
-import { userController } from '../User/user.controller';
+
 import { Request } from "express";
 
 const loginUser = async (payload: TLoginUser) => {
@@ -59,7 +59,7 @@ const loginUser = async (payload: TLoginUser) => {
 };
 
 
-const registerUser = async (userData:typeRegister) => {
+const registerUser = async (userData: { password: string; }, path:string ) => {
   if (userData.password) {
     userData.password = await bcryptJs.hash(
       userData.password,
@@ -68,6 +68,7 @@ const registerUser = async (userData:typeRegister) => {
   }
   const user = await User.create({
     ...userData,
+    img: path,
     role: USER_ROLE.user,
   });
 
@@ -150,7 +151,6 @@ const forgetPassword = async (email:string) => {
   const userEmail = email;
   
 
-
   const user = await User.findOne({ email: userEmail });
     if (user?.social) {
       throw new AppError(httpStatus.NOT_FOUND, 'User Already Login with Google');
@@ -159,7 +159,6 @@ const forgetPassword = async (email:string) => {
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
-
 
   const jwtPayload = {
     userId: user.id,
@@ -174,17 +173,14 @@ const forgetPassword = async (email:string) => {
   );
 
   const resetUILink = `${config.reset_pass_ui_link}?id=${user.id}&token=${resetToken} `;
-
   sendEmail(user.email, resetUILink);
+
 };
+
 
 const resetPassword = async (req:Request) => {
 
   const { password, userId } = req.body;
-
-
-
-  
   const user = await User.findOne({ _id: userId });
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');

@@ -1,4 +1,4 @@
-
+import { Types } from 'mongoose';
 
 export interface IUser {
   name: string;
@@ -6,8 +6,8 @@ export interface IUser {
   rating: number;
   email: string;
   password: string;
-  role: 'admin' | 'user' ;
+  role: 'admin' | 'user';
   social: boolean;
-
+  followers: Types.ObjectId[];  // Array of ObjectIds referencing other users
+  following: Types.ObjectId[];  // Array of ObjectIds referencing other users
 }
-

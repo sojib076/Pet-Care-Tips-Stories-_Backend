@@ -8,10 +8,11 @@ export const sendEmail = async (to: string, html: string) => {
     secure: config.NODE_ENV === 'production',
     auth: {
       // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-      user: 'sojibdas123@gmail.com',
-      pass: 'teek flnk gmkr oukl',
+      user: config.email_user,
+      pass: config.email_pass,
     },
   });
+
 
   await transporter.sendMail({
     from: 'sojibdas123@gmail.com', // sender address

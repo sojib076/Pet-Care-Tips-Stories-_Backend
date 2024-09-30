@@ -24,14 +24,16 @@ const loginUser = catchAsync(async (req, res) => {
 
 
 const registerUser = catchAsync(async (req, res) => {
-  const result = await AuthServices.registerUser(req.body);
-
+  
+  const path = req.file ? req.file.path : null;
+  const result = await AuthServices.registerUser(req.body, path as string);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'User registered successfully',
     data: result,
   });
+
 });
 const googleLogin = catchAsync(async (req, res) => {
   const result = await AuthServices.googleLogin(req.body);

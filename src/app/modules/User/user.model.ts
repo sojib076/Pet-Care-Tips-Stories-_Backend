@@ -36,6 +36,21 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  
+  followers: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      default: [], 
+    },
+  ],
+  following: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      default: [], 
+    },
+  ],
 });
 
 

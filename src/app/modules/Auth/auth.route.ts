@@ -3,7 +3,9 @@ import express from 'express';
 import validateRequest from '../../middlewares/validateRequest';
 import { AuthValidation } from './auth.validation';
 import { AuthControllers } from './auth.controller';
-import auth from '../../middlewares/auth';
+import { multerUpload } from '../../config/multer.config';
+
+
 
 
 const router = express.Router();
@@ -16,6 +18,7 @@ router.post(
 
 router.post(
   '/register',
+multerUpload.single('profileImage'),
   validateRequest(AuthValidation.registerUserValidationSchema),
   AuthControllers.registerUser,
 );
