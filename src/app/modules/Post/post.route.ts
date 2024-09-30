@@ -1,5 +1,5 @@
 
-// make the route for the post module post 
+
 
 
 import { Router } from "express";
@@ -21,6 +21,7 @@ router.post('/upvotepost', auth("user","admin"), postController.upvotepost);
 router.post('/downvotepost', auth("user","admin"), postController.downvotepost);
 
 router.post('/addcomment', auth("user","admin"), postController.addcomment);
+
 
 
 

@@ -92,26 +92,28 @@ const upvotePost = async (req: Request) => {
 
 
   
-  const getAllPosts = async (page = 1, limit = 2) => {
-    const skip = (page - 1) * limit; // Calculate how many posts to skip based on the current page
-  
+  const getAllPosts = async (page: number, limit: number) => {
+    console.log('page', page);
+    const skip = (page - 1) * limit;
+
     // Fetch posts with pagination
     const posts = await Post.find({})
-      .populate('author')
-      .populate({ path: 'comments.userId' })
-      .skip(skip) // Skip posts from previous pages
-      .limit(limit) // Limit the number of posts per page
-      .exec();
-  
+        .populate('author')
+        .populate({ path: 'comments.userId' })
+        .skip(skip) // Skip posts from previous pages
+        .limit(limit) 
+        .exec();
+
     // Get total number of posts (for calculating if there are more pages)
     const totalPosts = await Post.countDocuments();
-  
+
+    // Return the paginated posts, total count, and hasMore flag
     return {
-      posts, // Current page of posts
-      totalPosts, // Total posts in the database
-      hasMore: page * limit < totalPosts, // Boolean indicating if there are more pages to load
+        posts, // Current page of posts
+        totalPosts, // Total number of posts in the database
+        hasMore: page * limit < totalPosts, // Boolean indicating if there are more pages to load
     };
-  };
+};
   
 
   
@@ -119,6 +121,7 @@ const upvotePost = async (req: Request) => {
 
 const addComment = async (req: Request) => {
     const { postId, comment } = req.body;
+    console.log('req.body', req.body);
   console.log(req.body);
     const userId = req.user._id;
 

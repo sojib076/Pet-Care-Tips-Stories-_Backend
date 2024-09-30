@@ -1,7 +1,4 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import cors from 'cors';
 import express, { Application } from 'express';
 import globalErrorHandler from './app/middlewares/globalErrorhandler';
@@ -13,7 +10,7 @@ const app: Application = express();
 //parsers
 app.use(express.json());
 
-app.use(cors({ origin: ['https://next-level-apollo-gears-segment-2.vercel.app/'] }));
+app.use(cors({ origin: ['http://localhost:3000'] }));
 
 app.use(cookieParser())
 

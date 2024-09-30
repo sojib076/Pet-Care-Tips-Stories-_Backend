@@ -36,14 +36,22 @@ const downvotepost = catchAsync(async (req, res) => {
     });
 });
 const getposts = catchAsync(async (req, res) => {
-    const result = await postService.getAllPosts();
+    // Extract page and limit from query parameters
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+
+    // Pass page and limit to the service
+    const result = await postService.getAllPosts(page as number, limit as number);
+
+    // Send the response using the sendResponse utility
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'User is logged in successfully!',
-        data: result,
+        message: 'Posts fetched successfully!',
+        data: result, // Contains paginated posts, totalPosts, hasMore, etc.
     });
 });
+
 
 const addcomment = catchAsync(async (req, res) => {
     const result = await postService.addComment(req);
@@ -58,7 +66,8 @@ export const postController = {
     createpost,
     upvotepost,
     downvotepost,
-    getposts,addcomment
+    getposts,
+    addcomment
 
 
 }

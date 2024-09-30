@@ -14,4 +14,12 @@ router.put('/me',auth(USER_ROLE.admin,USER_ROLE.user), userController.userUpdate
 
 
 
+router.post('/followuser', auth('admin','user') ,userController.followUser); 
+router.get('/getfollowedUsers', auth('admin','user') , userController.getFollowedUsers); 
+
+
+
+
+
+
 export const userRoutes = router;
