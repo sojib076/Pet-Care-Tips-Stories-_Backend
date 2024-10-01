@@ -92,26 +92,18 @@ const upvotePost = async (req: Request) => {
 
 
   
-  const getAllPosts = async (page: number, limit: number) => {
-    console.log('page', page);
-    const skip = (page - 1) * limit;
+  const getAllPosts = async (req:Request) => {
+    const {category} = req.query;
+ 
 
-    // Fetch posts with pagination
-    const posts = await Post.find({})
+    const query = category ? category==='all' ? {} : {category} : {};
+    const posts = await Post.find(query)
         .populate('author')
         .populate({ path: 'comments.userId' })
-        .skip(skip) // Skip posts from previous pages
-        .limit(limit) 
         .exec();
-
-    // Get total number of posts (for calculating if there are more pages)
-    const totalPosts = await Post.countDocuments();
-
-    // Return the paginated posts, total count, and hasMore flag
     return {
-        posts, // Current page of posts
-        totalPosts, // Total number of posts in the database
-        hasMore: page * limit < totalPosts, // Boolean indicating if there are more pages to load
+      posts,
+      totalPosts: posts.length,
     };
 };
   
@@ -121,7 +113,7 @@ const upvotePost = async (req: Request) => {
 
 const addComment = async (req: Request) => {
     const { postId, comment } = req.body;
-    console.log('req.body', req.body);
+  
   console.log(req.body);
     const userId = req.user._id;
 
@@ -130,7 +122,10 @@ const addComment = async (req: Request) => {
       throw new Error('Post not found');
     }
 
-    post.comments.push({ userId, content: comment });
+    post.comments.push({
+      userId, content: comment,
+      
+    });
     await post.save();
     return post;
  
@@ -140,13 +135,14 @@ const deleteComment = async (req: Request) => {
     const { postId, commentId } = req.body
     const userId = req.user._id;
 
-    const post = await Post.findById(postId) 
+    const post = await Post.findById(postId);
 
     if (!post) {
       throw new Error('Post not found');
     }
-  //  find the comment and delete it from the array
-    const comment = post.comments.find(comment => comment._id.toString() === commentId.toString());
+  
+  
+    const comment = post.comments.find(comment => comment?._id.toString() === commentId.toString());
 
     if (!comment) {
       throw new Error('Comment not found');

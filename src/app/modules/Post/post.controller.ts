@@ -36,19 +36,17 @@ const downvotepost = catchAsync(async (req, res) => {
     });
 });
 const getposts = catchAsync(async (req, res) => {
-    // Extract page and limit from query parameters
-    const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
+   
 
-    // Pass page and limit to the service
-    const result = await postService.getAllPosts(page as number, limit as number);
+   
+    const result = await postService.getAllPosts(req);
 
-    // Send the response using the sendResponse utility
+   
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
         message: 'Posts fetched successfully!',
-        data: result, // Contains paginated posts, totalPosts, hasMore, etc.
+        data: result, 
     });
 });
 

@@ -1,7 +1,7 @@
 import mongoose, { Document } from 'mongoose';
 
 export interface Comment {
-  _id: any;
+  _id?: string;
   userId: mongoose.Types.ObjectId; // Use mongoose.Types.ObjectId
   content: string;
   createdAt?: Date;
