@@ -92,6 +92,16 @@ const getuserfollowignposts = catchAsync(async (req, res) => {
     });
 });
 
+const search = catchAsync(async (req, res) => {
+    const result = await postService.search(req);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'User is logged in successfully!',
+        data: result,
+    });
+});
+
 
 
 
@@ -107,7 +117,8 @@ export const postController = {
     addcomment,
     updateComment,
     deleteComment,
-    getuserfollowignposts
+    getuserfollowignposts,
+    search
 
 
 }

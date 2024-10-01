@@ -10,6 +10,7 @@ import auth from "../../middlewares/auth";
 
 const router = Router();
 router.get('/getfollwingposts', auth("user", "admin"), postController.getuserfollowignposts);
+router.get('/search', postController.search);
 router.get('/get', postController.getposts);
 
 router.post('/createpost',
@@ -23,6 +24,8 @@ router.post('/downvotepost', auth("user", "admin"), postController.downvotepost)
 router.post('/addcomment', auth("user", "admin"), postController.addcomment);
 router.put('/editcomment', auth("user", "admin"), postController.updateComment);
 router.delete('/deletecomment', auth("user", "admin"), postController.deleteComment);
+
+
 
 
 

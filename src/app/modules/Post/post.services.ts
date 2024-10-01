@@ -194,6 +194,25 @@ const getuserfollowignposts = async (req:Request) => {
   };
 }
 
+const search = async (req: Request) => {
+  const { searchTerm, searchCategory } = req.query;
+
+  // Build the query object
+  const query = {
+    ...(searchCategory ? { category: searchCategory } : {}),
+    ...(typeof searchTerm === 'string' ? { content: { $regex: new RegExp(searchTerm, 'i') } } : {}) 
+  };
+
+ 
+  const posts = await Post.find(query)
+    .populate('author')
+    .populate({ path: 'comments.userId' })
+    .exec();
+
+  return {
+    posts,
+  };
+};
 
 
 export const postService = {
@@ -204,6 +223,7 @@ export const postService = {
     addComment,
     updateComment,
     deleteComment,
-    getuserfollowignposts
+    getuserfollowignposts,
+    search
    
 }
