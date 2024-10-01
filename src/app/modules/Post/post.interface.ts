@@ -24,6 +24,8 @@ export interface PostDocument extends Document {
     voteType: 'up' | 'down';
   }[];
 
+  ispublished: boolean;
+
   createdAt?: Date; 
   updatedAt?: Date;
 }

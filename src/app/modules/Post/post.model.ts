@@ -52,10 +52,6 @@ const postSchema = new Schema<PostDocument>(
       enum: ['Tip', 'Story'],
       required: true,
     },
-    image: {
-      type: String,
-      required: true,
-    },
     premiumContent: {
       type: Boolean,
       default: false,
@@ -74,6 +70,10 @@ const postSchema = new Schema<PostDocument>(
         ref: 'User',
       },
     ],
+   ispublished: {
+      type: Boolean,
+      default: true
+   },
     comments: [commentSchema],
     voters: [voterSchema] , // Added voters schema here to track votes
   },

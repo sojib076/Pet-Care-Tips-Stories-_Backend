@@ -1,14 +1,12 @@
 /* eslint-disable no-console */
 import { Request } from "express";
 import Post from "./post.model";
-
-
+import { User } from "../User/user.model";
 
 const createPost = async (req:Request) => {
 
     const userId = req.user._id;
-
-    const file = req?.file?.path
+   
 
    const { title, content, category, premiumContent } = req.body;
    const post = await Post.create({
@@ -17,8 +15,8 @@ const createPost = async (req:Request) => {
          content,
          category,
          premiumContent,
-         image: file,
    });
+   
     return  post;
 };
 
@@ -108,9 +106,6 @@ const upvotePost = async (req: Request) => {
 };
   
 
-  
-
-
 const addComment = async (req: Request) => {
     const { postId, comment } = req.body;
   
@@ -179,6 +174,26 @@ const updateComment = async (req: Request) => {
   return post;
 };
 
+const getuserfollowignposts = async (req:Request) => {
+  const userId = req.user._id;
+
+  console.log(userId,'followign posts');
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new Error('User not found');
+  }
+  const following = user.following;
+
+  const posts = await Post.find({ author: { $in: following } })
+    .populate('author')
+    .populate({ path: 'comments.userId' })
+    .exec();
+  return {
+    posts,
+    totalPosts: posts.length,
+  };
+}
+
 
 
 export const postService = {
@@ -188,6 +203,7 @@ export const postService = {
     getAllPosts,
     addComment,
     updateComment,
-    deleteComment
+    deleteComment,
+    getuserfollowignposts
    
 }

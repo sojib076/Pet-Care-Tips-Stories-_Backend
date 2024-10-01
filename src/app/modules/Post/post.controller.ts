@@ -80,6 +80,25 @@ const deleteComment = catchAsync(async (req, res) => {
         data: result,
     });
 });
+
+
+const getuserfollowignposts = catchAsync(async (req, res) => {
+    const result = await postService.getuserfollowignposts(req);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'User is logged in successfully!',
+        data: result,
+    });
+});
+
+
+
+
+
+
+
+
 export const postController = {
     createpost,
     upvotepost,
@@ -87,7 +106,8 @@ export const postController = {
     getposts,
     addcomment,
     updateComment,
-    deleteComment
+    deleteComment,
+    getuserfollowignposts
 
 
 }
