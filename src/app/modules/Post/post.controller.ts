@@ -62,12 +62,34 @@ const addcomment = catchAsync(async (req, res) => {
         data: result,
     });
 });
+
+
+const updateComment = catchAsync(async (req, res) => {
+    const result = await postService.updateComment(req);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'User is logged in successfully!',
+        data: result,
+    });
+});
+const deleteComment = catchAsync(async (req, res) => {
+    const result = await postService.deleteComment(req);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'User is logged in successfully!',
+        data: result,
+    });
+});
 export const postController = {
     createpost,
     upvotepost,
     downvotepost,
     getposts,
-    addcomment
+    addcomment,
+    updateComment,
+    deleteComment
 
 
 }

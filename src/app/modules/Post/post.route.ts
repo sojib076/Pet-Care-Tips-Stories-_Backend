@@ -12,15 +12,17 @@ const router = Router();
 
 router.get('/get', postController.getposts);
 
-router.post('/createpost', 
+router.post('/createpost',
     multerUpload.single('image'),
-    auth("user","admin"),
+    auth("user", "admin"),
     postController.createpost);
 
-router.post('/upvotepost', auth("user","admin"), postController.upvotepost);
-router.post('/downvotepost', auth("user","admin"), postController.downvotepost);
+router.post('/upvotepost', auth("user", "admin"), postController.upvotepost);
+router.post('/downvotepost', auth("user", "admin"), postController.downvotepost);
 
-router.post('/addcomment', auth("user","admin"), postController.addcomment);
+router.post('/addcomment', auth("user", "admin"), postController.addcomment);
+router.put('/editcomment', auth("user", "admin"), postController.updateComment);
+router.delete('/deletecomment', auth("user", "admin"), postController.deleteComment);
 
 
 

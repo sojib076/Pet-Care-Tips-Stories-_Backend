@@ -136,6 +136,53 @@ const addComment = async (req: Request) => {
  
 };
 
+const deleteComment = async (req: Request) => {
+    const { postId, commentId } = req.body
+    const userId = req.user._id;
+
+    const post = await Post.findById(postId) 
+
+    if (!post) {
+      throw new Error('Post not found');
+    }
+  //  find the comment and delete it from the array
+    const comment = post.comments.find(comment => comment._id.toString() === commentId.toString());
+
+    if (!comment) {
+      throw new Error('Comment not found');
+    }
+
+    if (comment.userId.toString() !== userId.toString()) {
+      throw new Error('Unauthorized');
+    }
+
+    post.comments = post.comments.filter(comment => comment._id.toString() !== commentId.toString());
+    await post.save();
+    return {
+      message: 'Comment deleted successfully',
+    }
+};
+
+
+const updateComment = async (req: Request) => {
+  const userId = req.user._id;
+  const { postId, commentId, editCommentValue } = req.body;
+  const post = await Post.findById(postId);
+  if (!post) {
+    throw new Error('Post not found');
+  }
+  const comment = post.comments.find(comment => comment._id.toString() === commentId.toString());
+  if (!comment) {
+    throw new Error('Comment not found');
+  }
+  if (comment.userId.toString() !== userId.toString()) {
+    throw new Error('Unauthorized');
+  }
+  comment.content = editCommentValue;
+  await post.save();
+  return post;
+};
+
 
 
 export const postService = {
@@ -143,5 +190,8 @@ export const postService = {
     upvotePost,
     downvotePost,
     getAllPosts,
-    addComment
+    addComment,
+    updateComment,
+    deleteComment
+   
 }
