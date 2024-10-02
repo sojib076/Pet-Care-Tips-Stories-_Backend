@@ -3,6 +3,7 @@ import { Request } from "express";
 import Post from "./post.model";
 import { User } from "../User/user.model";
 
+
 const createPost = async (req:Request) => {
 
     const userId = req.user._id;

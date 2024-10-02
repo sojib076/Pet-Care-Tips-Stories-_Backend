@@ -36,6 +36,13 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  paidfor: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Post',
+      default: [],
+    },
+  ],
   
   followers: [
     {

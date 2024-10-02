@@ -8,6 +8,7 @@ export interface IUser {
   password: string;
   role: 'admin' | 'user';
   social: boolean;
-  followers: Types.ObjectId[];  // Array of ObjectIds referencing other users
-  following: Types.ObjectId[];  // Array of ObjectIds referencing other users
+  paidfor:Types.ObjectId[];
+  followers: Types.ObjectId[]; 
+  following: Types.ObjectId[];  
 }
