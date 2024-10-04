@@ -16,7 +16,9 @@ const userGetProfile = catchAsync(async (req, res) => {
 });
 const userUpdateProfile = catchAsync(async (req, res) => {
       
+       
      const result = await userServices.userUpdateProfile(req);
+   
     
      sendResponse(res,{
           statusCode:200,
@@ -45,12 +47,22 @@ const getFollowedUsers = catchAsync(async (req, res) => {
         data: result,
     });
 });
+const getUserPosts = catchAsync(async (req, res) => {
+    const result = await userServices.getUserPosts(req);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'User is logged in successfully!',
+        data: result,
+    });
+});
 
 export const userController = {
     userGetProfile,
     userUpdateProfile,
     followUser,
     getFollowedUsers,
+    getUserPosts
   
 }
 

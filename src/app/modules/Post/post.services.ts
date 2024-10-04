@@ -24,7 +24,7 @@ const createPost = async (req:Request) => {
 
 const upvotePost = async (req: Request) => {
     const { postId } = req.body;
-    console.log(req.body);
+ 
     const userId = req.user._id; 
   
     const post = await Post.findById(postId);
@@ -85,15 +85,14 @@ const upvotePost = async (req: Request) => {
     }
   
    const result =   await post.save();
-   console.log(result);
+  
     return result;
   };
 
 
-  
+
   const getAllPosts = async (req:Request) => {
     const {category} = req.query;
- 
 
     const query = category ? category==='all' ? {} : {category} : {};
     const posts = await Post.find(query)
@@ -110,7 +109,6 @@ const upvotePost = async (req: Request) => {
 const addComment = async (req: Request) => {
     const { postId, comment } = req.body;
   
-  console.log(req.body);
     const userId = req.user._id;
 
     const post = await Post.findById(postId);
@@ -136,9 +134,10 @@ const deleteComment = async (req: Request) => {
     if (!post) {
       throw new Error('Post not found');
     }
+    
   
   
-    const comment = post.comments.find(comment => comment?._id.toString() === commentId.toString());
+    const comment = post.comments.find(comment => comment?._id?.toString() === commentId.toString());
 
     if (!comment) {
       throw new Error('Comment not found');
@@ -148,7 +147,7 @@ const deleteComment = async (req: Request) => {
       throw new Error('Unauthorized');
     }
 
-    post.comments = post.comments.filter(comment => comment._id.toString() !== commentId.toString());
+    post.comments = post.comments.filter(comment => comment._id && comment._id.toString() !== commentId.toString());
     await post.save();
     return {
       message: 'Comment deleted successfully',
@@ -163,7 +162,7 @@ const updateComment = async (req: Request) => {
   if (!post) {
     throw new Error('Post not found');
   }
-  const comment = post.comments.find(comment => comment._id.toString() === commentId.toString());
+  const comment = post.comments.find(comment => comment?._id?.toString() === commentId.toString());
   if (!comment) {
     throw new Error('Comment not found');
   }
@@ -178,7 +177,7 @@ const updateComment = async (req: Request) => {
 const getuserfollowignposts = async (req:Request) => {
   const userId = req.user._id;
 
-  console.log(userId,'followign posts');
+
   const user = await User.findById(userId);
   if (!user) {
     throw new Error('User not found');
@@ -197,8 +196,9 @@ const getuserfollowignposts = async (req:Request) => {
 
 const search = async (req: Request) => {
   const { searchTerm, searchCategory } = req.query;
+  console.log(searchTerm, searchCategory);
 
-  // Build the query object
+
   const query = {
     ...(searchCategory ? { category: searchCategory } : {}),
     ...(typeof searchTerm === 'string' ? { content: { $regex: new RegExp(searchTerm, 'i') } } : {}) 
@@ -215,6 +215,51 @@ const search = async (req: Request) => {
   };
 };
 
+const getsinglepost = async (postId:string) => {
+  const post = await Post.findById(postId)
+    .populate('author')
+    .populate({ path: 'comments.userId' })
+    .exec();
+  return post;
+} 
+const updatepost = async (req: Request) => {
+  const userId = req.user._id;
+
+  const { postId, title, content, category, premiumContent } = req.body;
+
+  const post = await Post.findById(postId);
+  if (!post) {
+    throw new Error('Post not found');
+  }
+  if (post.author.toString() !== userId.toString()) {
+    throw new Error('Unauthorized');
+  }
+  const updatedPost = await Post.findByIdAndUpdate(postId, 
+    { title, content, category, premiumContent }
+    , { new: true });
+  return updatedPost;
+};
+
+const deletepost = async (req: Request) => {
+  const userId = req.user._id;
+  const { postId } = req.body;
+  console.log(postId);
+  const post = await Post.findById(postId);
+  if (!post) {
+    throw new Error('Post not found');
+  }
+  if (post.author.toString() !== userId.toString()) {
+    throw new Error('Unauthorized');
+  }
+  await Post.findByIdAndDelete(postId);
+
+  return {
+    message: 'Post deleted successfully',
+  }
+};
+
+
+
 
 export const postService = {
     createPost,
@@ -225,6 +270,10 @@ export const postService = {
     updateComment,
     deleteComment,
     getuserfollowignposts,
-    search
+    search,
+    getsinglepost,
+    updatepost,
+    deletepost,
+
    
 }

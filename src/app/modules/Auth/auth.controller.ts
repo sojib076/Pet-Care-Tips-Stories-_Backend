@@ -26,6 +26,7 @@ const loginUser = catchAsync(async (req, res) => {
 const registerUser = catchAsync(async (req, res) => {
   
   const path = req.file ? req.file.path : null;
+  console.log(path);
   const result = await AuthServices.registerUser(req.body, path as string);
   sendResponse(res, {
     statusCode: httpStatus.OK,

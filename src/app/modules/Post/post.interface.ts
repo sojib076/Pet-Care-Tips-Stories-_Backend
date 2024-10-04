@@ -8,7 +8,6 @@ export interface Comment {
 }
 
 export interface PostDocument extends Document {
-  title: string;
   content: string;
   author: mongoose.Types.ObjectId; 
   category: 'Tip' | 'Story';

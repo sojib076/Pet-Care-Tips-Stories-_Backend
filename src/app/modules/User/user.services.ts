@@ -1,6 +1,7 @@
 
 import { Request } from "express";
 import { User } from "./user.model";
+import Post from "../Post/post.model";
 
 const userGetProfile = async (req: Request) => {
    
@@ -8,8 +9,8 @@ const userGetProfile = async (req: Request) => {
     if (!user) {
         throw new Error("User not found");
     }
-
-    const result = await User.findOne({email:user.email}).select("-password").lean().exec();
+// polulate following and followers 
+    const result = await User.findOne({email:user.email}).populate("following","name img").populate("followers","name img").select("-password").lean().exec();
 
     return result;
 }
@@ -59,7 +60,7 @@ const followUser = async (req: Request) => {
     await currentUser.save();
     await author.save();
   
-    // Return the updated following list of the current user
+    
     return {
       following: currentUser.following,
     };
@@ -79,12 +80,21 @@ export const getFollowedUsers = async ( req:Request) => {
   
   };
 
+export const getUserPosts = async (req: Request) => {
+    const userId = req.user._id
+
+    const findPost = await Post.find({author:userId}).populate("author").lean().exec();
+   
+    return findPost;
+   
+  };
 
 
  export const userServices = {
     userGetProfile,
     userUpdateProfile,
     followUser,
-    getFollowedUsers
+    getFollowedUsers,
+    getUserPosts
 
 }

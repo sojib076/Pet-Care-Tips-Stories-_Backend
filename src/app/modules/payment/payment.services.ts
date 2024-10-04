@@ -62,9 +62,10 @@ export const confirmationService = async (transactionId: string, userId: string,
 };
 
 export const initiatePayment = async (req:Request) => {
+    const time = Date.now()
     const userId =  req.query.userId as string;
     const postId = req.query.postId as string;
-  const paymentId = "payment" + Math.floor(Math.random() * 10).toString() + userId.slice(0, 3)+postId.slice(0, 3);
+  const paymentId = "payment" + Math.floor(Math.random() * 10104171010101).toString() + userId.slice(0, 8)+postId.slice(0, 10)+time ;
     const paymentInfo = {
         transactionId:paymentId,
         userId,

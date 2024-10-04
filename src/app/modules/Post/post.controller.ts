@@ -102,8 +102,37 @@ const search = catchAsync(async (req, res) => {
     });
 });
 
+const getsinglepost = catchAsync(async (req, res) => {
+    const postId = req.params.postId;
+    const result = await postService.getsinglepost(postId);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'User is logged in successfully!',
+        data: result,
+    });
+});
 
 
+ const updatepost = catchAsync(async (req, res) => {
+    const result = await postService.updatepost(req);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'User is logged in successfully!',
+        data: result,});
+}
+);
+
+const  deletepost = catchAsync(async (req, res) => {
+    const result = await postService.deletepost(req);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'User is logged in successfully!',
+        data: result,
+    });
+});
 
 
 
@@ -118,7 +147,11 @@ export const postController = {
     updateComment,
     deleteComment,
     getuserfollowignposts,
-    search
+    search,
+    getsinglepost,
+    updatepost,
+    deletepost
+    
 
 
 }
