@@ -8,7 +8,7 @@ const createpost = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'User is logged in successfully!',
+        message: ' Post created successfully!',
         data: result,
     });
 });
@@ -21,7 +21,7 @@ const upvotepost = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'User is logged in successfully!',
+        message: ' UPVOTE added successfully!',
         data: result,
     });
 });
@@ -31,7 +31,7 @@ const downvotepost = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'User is logged in successfully!',
+        message: ' DOWNVOTE added successfully!',
         data: result,
     });
 });
@@ -39,7 +39,7 @@ const getposts = catchAsync(async (req, res) => {
    
 
    
-    const result = await postService.getAllPosts(req);
+    const result = await postService.getAllPosts();
 
    
     sendResponse(res, {
@@ -56,7 +56,7 @@ const addcomment = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'User is logged in successfully!',
+        message: ' Comment added successfully!',
         data: result,
     });
 });
@@ -67,7 +67,7 @@ const updateComment = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'User is logged in successfully!',
+        message: ' Comment updated successfully!',
         data: result,
     });
 });
@@ -76,7 +76,7 @@ const deleteComment = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'User is logged in successfully!',
+        message: ' Comment deleted successfully!',
         data: result,
     });
 });
@@ -87,7 +87,7 @@ const getuserfollowignposts = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'User is logged in successfully!',
+        message: 'Following posts fetched successfully!',
         data: result,
     });
 });
@@ -97,7 +97,7 @@ const search = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'User is logged in successfully!',
+        message: 'Search results fetched successfully!',
         data: result,
     });
 });
@@ -134,7 +134,21 @@ const  deletepost = catchAsync(async (req, res) => {
     });
 });
 
+const category =catchAsync(async(req,res)=>{
+ 
+    const query = req.query.category
 
+    
+    const result = await postService.category(query as string)
+ 
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'User is logged in successfully!',
+        data: result,
+    });
+
+})
 
 
 
@@ -150,7 +164,8 @@ export const postController = {
     search,
     getsinglepost,
     updatepost,
-    deletepost
+    deletepost,
+    category
     
 
 

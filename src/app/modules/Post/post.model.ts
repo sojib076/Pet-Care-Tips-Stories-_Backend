@@ -32,7 +32,12 @@ const voterSchema = new Schema({
 });
 
 const postSchema = new Schema<PostDocument>(
+
   {
+    title: {
+      type: String,
+      required: true,
+    },
    
     content: {
       type: String,

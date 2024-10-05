@@ -4,12 +4,12 @@ import Post from "./post.model";
 import { User } from "../User/user.model";
 
 
-const createPost = async (req:Request) => {
 
+const createPost = async (req:Request) => {
     const userId = req.user._id;
-   
 
    const { title, content, category, premiumContent } = req.body;
+
    const post = await Post.create({
     author: userId,
          title,
@@ -38,7 +38,9 @@ const upvotePost = async (req: Request) => {
     if (existingVote) {
       if (existingVote.voteType === 'up') {
        
-        return post;
+        return {
+          alreayvoted: true
+        }
       } else if (existingVote.voteType === 'down') {
      
         post.downvotes -= 1;
@@ -46,7 +48,7 @@ const upvotePost = async (req: Request) => {
         existingVote.voteType = 'up'; 
       }
     } else {
-      // New upvote
+     
       post.upvotes += 1;
       post.voters.push({ userId, voteType: 'up' }); 
     }
@@ -58,30 +60,28 @@ const upvotePost = async (req: Request) => {
   
   const downvotePost = async (req: Request) => {
     const { postId } = req.body; 
-    const userId = req.user._id; // Extract userId from the authenticated user
-  
+    const userId = req.user._id; 
     const post = await Post.findById(postId);
     if (!post) {
       throw new Error('Post not found');
     }
-  
-    // Check if the user has already voted
+    
     const existingVote = post.voters.find(voter => voter.userId.toString() === userId.toString());
-  
     if (existingVote) {
       if (existingVote.voteType === 'down') {
-        // User already downvoted, no action needed
-        return post;
+        
+        return {
+         alreayvoted: true
+        }
       } else if (existingVote.voteType === 'up') {
-        // User has upvoted before, now switching to downvote
         post.upvotes -= 1;
         post.downvotes += 1;
-        existingVote.voteType = 'down'; // Update vote type to 'down'
+        existingVote.voteType = 'down'; 
       }
     } else {
-      // New downvote
+      
       post.downvotes += 1;
-      post.voters.push({ userId, voteType: 'down' }); // Add user vote to voters array
+      post.voters.push({ userId, voteType: 'down' });
     }
   
    const result =   await post.save();
@@ -91,22 +91,21 @@ const upvotePost = async (req: Request) => {
 
 
 
-  const getAllPosts = async (req:Request) => {
-    const {category} = req.query;
-
-    const query = category ? category==='all' ? {} : {category} : {};
-    const posts = await Post.find(query)
-        .populate('author')
-        .populate({ path: 'comments.userId' })
-        .exec();
+  const getAllPosts = async () => {
+    const posts = await Post.find({ ispublished: true }) 
+      .populate('author')
+      .populate({ path: 'comments.userId' })
+      .sort({ createdAt: -1 }) 
+      .exec();
     return {
       posts,
-      totalPosts: posts.length,
     };
-};
+  };
+  
   
 
 const addComment = async (req: Request) => {
+  console.log('addcomment service');
     const { postId, comment } = req.body;
   
     const userId = req.user._id;
@@ -156,6 +155,7 @@ const deleteComment = async (req: Request) => {
 
 
 const updateComment = async (req: Request) => {
+  console.log('updatecomment service');
   const userId = req.user._id;
   const { postId, commentId, editCommentValue } = req.body;
   const post = await Post.findById(postId);
@@ -177,7 +177,6 @@ const updateComment = async (req: Request) => {
 const getuserfollowignposts = async (req:Request) => {
   const userId = req.user._id;
 
-
   const user = await User.findById(userId);
   if (!user) {
     throw new Error('User not found');
@@ -188,26 +187,30 @@ const getuserfollowignposts = async (req:Request) => {
     .populate('author')
     .populate({ path: 'comments.userId' })
     .exec();
+
   return {
     posts,
-    totalPosts: posts.length,
   };
 }
 
 const search = async (req: Request) => {
   const { searchTerm, searchCategory } = req.query;
-  console.log(searchTerm, searchCategory);
-
 
   const query = {
+    ispublished: true, 
     ...(searchCategory ? { category: searchCategory } : {}),
-    ...(typeof searchTerm === 'string' ? { content: { $regex: new RegExp(searchTerm, 'i') } } : {}) 
+    ...(typeof searchTerm === 'string' ? { 
+      $or: [
+        { content: { $regex: new RegExp(searchTerm, 'i') } }, // Search in content
+        { title: { $regex: new RegExp(searchTerm, 'i') } } // Search in title
+      ] 
+    } : {})
   };
 
- 
   const posts = await Post.find(query)
     .populate('author')
     .populate({ path: 'comments.userId' })
+    .sort({ upvotes: -1 }) 
     .exec();
 
   return {
@@ -257,7 +260,21 @@ const deletepost = async (req: Request) => {
     message: 'Post deleted successfully',
   }
 };
+const category = async (query:string)=>{
 
+
+  const posts = await Post.find({ category: query ,ispublished: true})
+    .populate('author')
+    .populate({ path: 'comments.userId' })
+    .sort({upvotes:-1})
+    .exec();
+    
+    
+
+  return {
+    posts,
+  };
+}
 
 
 
@@ -274,6 +291,7 @@ export const postService = {
     getsinglepost,
     updatepost,
     deletepost,
+    category
 
    
 }

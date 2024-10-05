@@ -13,8 +13,10 @@ const router = Router();
 
 router.get('/getfollwingposts', auth("user", "admin"), postController.getuserfollowignposts);
 router.get('/search', postController.search);
+router.get('/category', postController.category)
 router.get('/get', postController.getposts);
 router.get('/:postId', postController.getsinglepost);
+
 
 router.post('/createpost', auth("user", "admin"), postController.createpost);
 router.post('/upvotepost', auth("user", "admin"), postController.upvotepost);
