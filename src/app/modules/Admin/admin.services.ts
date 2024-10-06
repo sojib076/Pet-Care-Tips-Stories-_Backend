@@ -54,11 +54,27 @@ const changeRoleuser = async (id: string) => {
 
 }
 
+const userblock = async (id: string) => {
+    const find = await User.findById(id)
+    if (!find) {
+        throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+    }
+    const isalreadyblocked = find?.isblocked;
+    if (isalreadyblocked) {
+      const unblock = await User.findByIdAndUpdate(id, { isblocked: false }, { new: true });
+      return unblock;
+    }
+    const block = await User.findByIdAndUpdate(id, { isblocked: true }, { new: true });
+    return block;
+}
+
 
 export const adminServices = {
     getalluser,
     getallpost,
     getallpayment,
     changeRoleadmin,
-    changeRoleuser
+    changeRoleuser,
+    userblock
+
 }

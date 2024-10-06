@@ -43,6 +43,10 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
       default: [],
     },
   ],
+  isblocked: {
+    type: Boolean,
+    default: false,
+  },
   
   followers: [
     {

@@ -13,6 +13,10 @@ import { Request } from "express";
 
 const loginUser = async (payload: TLoginUser) => {
   const user = await User.findOne({ email: payload.email });
+  if (user?.isblocked) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User is blocked , Please contact admin');
+  }
+
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   } else {

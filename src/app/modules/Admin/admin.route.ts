@@ -12,6 +12,7 @@ router.get('/getallpost', auth('admin'), adminController.getallpost );
 
 router.put('/roleamdin', adminController.changeRoleadmin);
 router.put('/roleuser', adminController.changeRoleuser);
+router.put('/userblock', adminController.userblock);
 
 
 

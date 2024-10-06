@@ -8,6 +8,7 @@ export interface IUser {
   password: string;
   role: 'admin' | 'user';
   social: boolean;
+  isblocked: boolean;
   paidfor:Types.ObjectId[];
   followers: Types.ObjectId[]; 
   following: Types.ObjectId[];  

@@ -62,10 +62,23 @@ const changeRoleuser = catchAsync(async (req,res) => {
     });
 });
 
+const userblock = catchAsync(async (req,res) => {
+    const id = req.query.id as string
+   
+    const result = await adminServices.userblock(id);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: ' User unblocked successfully',
+        data: result,
+    });
+})
+
 export const adminController = {
     getallpost,
     getallusers,
     getallpayment,
     changeRoleadmin,
-    changeRoleuser
+    changeRoleuser,
+    userblock
 }

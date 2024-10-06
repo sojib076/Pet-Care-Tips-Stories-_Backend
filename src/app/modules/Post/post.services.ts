@@ -92,11 +92,14 @@ const upvotePost = async (req: Request) => {
 
 
   const getAllPosts = async () => {
+    console.log('getallposts service');
     const posts = await Post.find({ ispublished: true }) 
       .populate('author')
       .populate({ path: 'comments.userId' })
-      .sort({ createdAt: -1 }) 
-      .exec();
+      .sort({ createdAt: -1 })
+      .exec()
+
+      console.log(posts);
     return {
       posts,
     };
