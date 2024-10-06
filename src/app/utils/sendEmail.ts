@@ -17,18 +17,18 @@ export const sendEmail = async (to: string,  html: string) => {
 
   const mailData = {
     from: config.email_user, 
-    to, // Receiver address
-    subject: 'Password Reset', // Subject line
-    html, // Email content in HTML format
+    to, 
+    subject: 'Password Reset', 
+    html, 
   };
 
   // Wrap sendMail in a Promise
   await new Promise((resolve, reject) => {
     transporter.sendMail(mailData, (err, info) => {
       if (err) {
-        reject(err); // Reject the Promise if there's an error
+        reject(err); 
       } else {
-        resolve(info); // Resolve the Promise with the result
+        resolve(info); 
       }
     });
   });

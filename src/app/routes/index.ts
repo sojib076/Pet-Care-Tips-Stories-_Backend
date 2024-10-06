@@ -3,6 +3,7 @@ import { AuthRoutes } from '../modules/Auth/auth.route';
 import { userRoutes } from '../modules/User/user.routes';
 import { postRoutes } from '../modules/Post/post.route';
 import { paymentRoutes } from '../modules/payment/payment.route';
+import { adminRoutes } from '../modules/Admin/admin.route';
 
 
 type TModuleRoutes = {
@@ -28,6 +29,10 @@ const moduleRoutes: TModuleRoutes[] = [
   {
     path: '/payment',
     route: paymentRoutes
+  },
+  {
+    path: '/admin',
+    route: adminRoutes
   }
 
 ];

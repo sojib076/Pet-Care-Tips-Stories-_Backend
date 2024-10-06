@@ -33,7 +33,7 @@ const followUser = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'User is logged in successfully!',
+        message: ' User followed successfully!',
         data: result,
     });
 });
@@ -43,7 +43,7 @@ const getFollowedUsers = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'User is logged in successfully!',
+        message: ' User Followed users fetched successfully!',
         data: result,
     });
 });
@@ -52,7 +52,7 @@ const getUserPosts = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'User is logged in successfully!',
+        message: ' User posts fetched successfully!',
         data: result,
     });
 });
