@@ -6,13 +6,13 @@ import auth from "../../middlewares/auth";
 
 
 const router = Router();
-
+router.get('/getallpost', auth('admin'), adminController.getallpost); 
 router.get('/getalluser', auth('admin') ,adminController.getallusers ); 
-router.get('/getallpost', auth('admin'), adminController.getallpost ); 
 
-router.put('/roleamdin', adminController.changeRoleadmin);
-router.put('/roleuser', adminController.changeRoleuser);
-router.put('/userblock', adminController.userblock);
+router.put('/roleamdin', auth("admin"), adminController.changeRoleadmin);
+router.put('/roleuser', auth('admin') ,adminController.changeRoleuser);
+router.put('/userblock', auth('admin'), adminController.userblock);
+router.post('/postpublish', auth('admin'), adminController.postpublish);
 
 
 

@@ -186,7 +186,7 @@ const getuserfollowignposts = async (req:Request) => {
   }
   const following = user.following;
 
-  const posts = await Post.find({ author: { $in: following } })
+  const posts = await Post.find({ author: { $in: following } ,ispublished: true})
     .populate('author')
     .populate({ path: 'comments.userId' })
     .exec();

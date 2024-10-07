@@ -6,9 +6,9 @@ import { adminServices } from "./admin.services";
 
 
 const getallpost = catchAsync(async (req, res) => {
-    const result =  await adminServices.getallpost();
-    // eslint-disable-next-line no-console
-    console.log(result);
+    const page = req.query.page as string;
+    const result =  await adminServices.getallpost(page);
+
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -19,7 +19,13 @@ const getallpost = catchAsync(async (req, res) => {
 
 
 const getallusers = catchAsync(async (req, res) => {
-    const result = await adminServices.getalluser();  // Add `await` here
+    
+    const page = req.query.page as string;
+
+    
+
+
+    const result = await adminServices.getalluser(page); 
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -74,11 +80,27 @@ const userblock = catchAsync(async (req,res) => {
     });
 })
 
+const postpublish = catchAsync(async (req,res) => {
+
+    const id = req.body.postId as string
+    
+   
+    const result = await adminServices.postpublish(id);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: ' Post published successfully',
+        data: result,
+    });
+
+})
+
 export const adminController = {
     getallpost,
     getallusers,
     getallpayment,
     changeRoleadmin,
     changeRoleuser,
-    userblock
+    userblock,
+    postpublish
 }
