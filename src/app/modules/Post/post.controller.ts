@@ -36,12 +36,13 @@ const downvotepost = catchAsync(async (req, res) => {
     });
 });
 const getposts = catchAsync(async (req, res) => {
-   
+    
+    
 
-   
+    
     const result = await postService.getAllPosts();
 
-   
+    
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,

@@ -36,11 +36,15 @@ const getallusers = catchAsync(async (req, res) => {
 
 
 const getallpayment = catchAsync(async (req,res) => {
-    const result = await  adminServices.getallpayment();
+
+    const page = req.query.page as string;
+    const pageNumber = parseInt(page);
+
+    const result = await  adminServices.getallpayment(pageNumber);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: ' User posts fetched successfully!',
+        message: ' User payments fetched successfully!',
         data: result,
     });
 });

@@ -92,14 +92,16 @@ const upvotePost = async (req: Request) => {
 
 
   const getAllPosts = async () => {
-    console.log('getallposts service');
+   
+   
     const posts = await Post.find({ ispublished: true }) 
       .populate('author')
       .populate({ path: 'comments.userId' })
       .sort({ createdAt: -1 })
       .exec()
-
       console.log(posts);
+
+    
     return {
       posts,
     };
@@ -108,7 +110,7 @@ const upvotePost = async (req: Request) => {
   
 
 const addComment = async (req: Request) => {
-  console.log('addcomment service');
+
     const { postId, comment } = req.body;
   
     const userId = req.user._id;
@@ -158,7 +160,7 @@ const deleteComment = async (req: Request) => {
 
 
 const updateComment = async (req: Request) => {
-  console.log('updatecomment service');
+  
   const userId = req.user._id;
   const { postId, commentId, editCommentValue } = req.body;
   const post = await Post.findById(postId);
@@ -249,7 +251,7 @@ const updatepost = async (req: Request) => {
 const deletepost = async (req: Request) => {
   const userId = req.user._id;
   const { postId } = req.body;
-  console.log(postId);
+ 
   const post = await Post.findById(postId);
   if (!post) {
     throw new Error('Post not found');

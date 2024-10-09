@@ -8,7 +8,7 @@ import auth from "../../middlewares/auth";
 const router = Router();
 router.get('/getallpost', auth('admin'), adminController.getallpost); 
 router.get('/getalluser', auth('admin') ,adminController.getallusers ); 
-
+router.get('/payment', adminController.getallpayment);
 router.put('/roleamdin', auth("admin"), adminController.changeRoleadmin);
 router.put('/roleuser', auth('admin') ,adminController.changeRoleuser);
 router.put('/userblock', auth('admin'), adminController.userblock);

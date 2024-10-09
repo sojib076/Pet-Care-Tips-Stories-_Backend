@@ -5,15 +5,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const initiatePayments = async (paymentInfo:any) => {
+
     
     try {
         const response = await axios.post('https://sandbox.aamarpay.com/jsonpost.php', {
             store_id: "aamarpaytest",
             signature_key: "dbb74894e82415a2f7ff0ec3a97e4183",
             tran_id: paymentInfo.transactionId,
-            success_url: `http://localhost:5000/api/v1/payment/confirmation?transactionId=${paymentInfo.transactionId}&userId=${paymentInfo.userId}&postId=${paymentInfo.postId}&status=success`,
-            fail_url: `http://localhost:5000/api/payment/confirmation?status=failed`,
-            cancel_url: "http://localhost:5173/",
+            success_url: `https://petcareblgogs.vercel.app/api/v1/payment/confirmation?transactionId=${paymentInfo.transactionId}&userId=${paymentInfo.userId}&postId=${paymentInfo.postId}&status=success`,
+            fail_url: `https://petcareblgogs.vercel.app/api/payment/confirmation?status=failed`,
+            cancel_url: "https://petcareblogs.vercel.app/",
             amount: '100',
             currency: "BDT",
             desc: "Merchant Registration Payment",

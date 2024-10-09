@@ -5,9 +5,6 @@ import { InvoiceModel } from "./invoice.model";
 import { initiatePayments } from "./payment.utilis";
 import { Request } from 'express';
 
-
-
-
 export const confirmationService = async (transactionId: string, userId: string, postId: string) => {
 
     const user = await User.findById(userId);
@@ -56,7 +53,7 @@ export const confirmationService = async (transactionId: string, userId: string,
     <body>
         <h1>Payment Successful</h1>
         <p>Thank you for your payment.</p>
-        <a href="http://localhost:3000/" class="button">Go to Home</a>
+        <a href="https://petcareblogs.vercel.app/newsfeed" class="button">Go to News Feed</a>
     </body>
     </html>`;
 };
