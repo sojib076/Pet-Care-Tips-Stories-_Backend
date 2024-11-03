@@ -7,9 +7,13 @@ const router = Router();
 
 router.get('/me',auth("admin","user"), userController.userGetProfile); 
 router.put('/me' ,auth("admin","user"), userController.userUpdateProfile); 
+router.get('/getuserposts', auth('admin','user') , userController.getUserPosts);
+router.get('/:userId', userController.getUserbyProfile);
 router.post('/followuser', auth('admin','user') ,userController.followUser); 
 router.get('/getfollowedUsers', auth('admin','user') , userController.getFollowedUsers); 
-router.get('/getuserposts', auth('admin','user') , userController.getUserPosts);
+
+
+
 
 
 

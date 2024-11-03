@@ -150,10 +150,18 @@ const category =catchAsync(async(req,res)=>{
     });
 
 })
-
-
+const getUserbyPosts = catchAsync(async (req, res) => {
+    const result = await postService.getUserbyPosts(req);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'User is logged in successfully!',
+        data: result,
+    });
+});
 
 export const postController = {
+    getUserbyPosts,
     createpost,
     upvotepost,
     downvotepost,

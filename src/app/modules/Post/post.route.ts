@@ -18,6 +18,7 @@ router.get('/search', postController.search);
 router.get('/category', postController.category)
 router.get('/get', postController.getposts);
 router.get('/:postId', auth('admin','user') ,postController.getsinglepost);
+router.get('/getuserpostbyid/:userId', postController.getUserbyPosts);
 
 
 router.post('/createpost', auth("user", "admin"), validateRequest(PostValidation.createpostvalidation),postController.createpost);

@@ -79,11 +79,10 @@ export const getFollowedUsers = async ( req:Request) => {
   
   };
 
-export const getUserPosts = async (req: Request) => {
+  export const getUserPosts = async (req: Request) => {
     const userId = req.user._id
 
   
-
     const findPost = await Post.find({author:userId}).populate("author").lean().exec();
     
    
@@ -91,12 +90,22 @@ export const getUserPosts = async (req: Request) => {
    
   };
 
+const getUserbyProfile = async (req: Request) => {
+    const userId = req.params.userId;
+ 
+  
+    const result = await User.findById(userId).select("-password").populate("following").populate("followers").lean().exec();
+ 
+    return result;
+  
+}
 
  export const userServices = {
     userGetProfile,
     userUpdateProfile,
     followUser,
     getFollowedUsers,
-    getUserPosts
+    getUserPosts,
+    getUserbyProfile
 
 }

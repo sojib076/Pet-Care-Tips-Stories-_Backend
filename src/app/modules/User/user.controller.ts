@@ -57,12 +57,23 @@ const getUserPosts = catchAsync(async (req, res) => {
     });
 });
 
+const getUserbyProfile = catchAsync(async (req, res) => {
+    const result = await userServices.getUserbyProfile(req);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: ' User profile fetched successfully!',
+        data: result,
+    });
+});
+
 export const userController = {
     userGetProfile,
     userUpdateProfile,
     followUser,
     getFollowedUsers,
-    getUserPosts
+    getUserPosts,
+    getUserbyProfile
   
 }
 

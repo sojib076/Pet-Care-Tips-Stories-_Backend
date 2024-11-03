@@ -99,7 +99,7 @@ const upvotePost = async (req: Request) => {
       .populate({ path: 'comments.userId' })
       .sort({ createdAt: -1 })
       .exec()
-      console.log(posts);
+  
 
     
     return {
@@ -279,11 +279,26 @@ const category = async (query:string)=>{
   return {
     posts,
   };
-}
+} 
+
+const getUserbyPosts = async (req: Request) => {
+  const userId = req.params.userId;
+
+
+  const posts = await Post.find({ author: userId })
+    .populate('author')
+    .populate({ path: 'comments.userId' })
+    .sort({ createdAt: -1 })
+    .exec();
+  return {
+    posts,
+  };
+};
 
 
 
 export const postService = {
+  getUserbyPosts,
     createPost,
     upvotePost,
     downvotePost,
