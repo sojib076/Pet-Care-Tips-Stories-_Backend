@@ -4,6 +4,7 @@ import { userRoutes } from '../modules/User/user.routes';
 import { postRoutes } from '../modules/Post/post.route';
 import { paymentRoutes } from '../modules/payment/payment.route';
 import { adminRoutes } from '../modules/Admin/admin.route';
+import { groupRoutes } from '../modules/Group/group.route';
 
 
 type TModuleRoutes = {
@@ -33,6 +34,10 @@ const moduleRoutes: TModuleRoutes[] = [
   {
     path: '/admin',
     route: adminRoutes
+  },
+  {
+    path: '/group',
+    route: groupRoutes
   }
 
 ];
