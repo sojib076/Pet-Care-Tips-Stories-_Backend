@@ -30,10 +30,29 @@ const discoverGroup = async () => {
     const groups = await Group.find({});
     return groups;
 };
-
+const deleteGroup = async (req: Request) => {
+    const id = req.params.id;
+    const group = await Group.findById (id);
+    if(!group){
+        return "Group not found";
+    }
+    const checkAdmin = group.admin.toString() === req.user._id.toString();
+    if(!checkAdmin){
+        return "You are not allowed to delete this group";
+    }
+    const result = await Group.findByIdAndDelete(id);
+    return result;
+};
+const getSingleGroup = async (req: Request) => {
+    const id = req.params.id;
+    const group = await Group.findById(id);
+    return group;
+};
 
 export const groupService = {
     createGroup,
     getUserCreateGroup,
-    discoverGroup
+    discoverGroup,
+    deleteGroup,
+    getSingleGroup
 }

@@ -42,9 +42,34 @@ const discoverGroup =catchAsync(async(req,res)=>{
           data: result,
      });
 })
+const deleteGroup =catchAsync(async(req,res)=>{
+          
+          const result = await groupService.deleteGroup(req);
+          
+          sendResponse(res, {
+               statusCode: httpStatus.OK,
+               success: true,
+               message: 'User is logged in successfully!',
+               data: result,
+          });
+})
+
+const getsinglegroup =catchAsync(async(req,res)=>{
+          
+          const result = await groupService.getSingleGroup(req);
+          
+          sendResponse(res, {
+               statusCode: httpStatus.OK,
+               success: true,
+               message: ' Single Group',
+               data: result,
+          });
+})
 
 export const GroupController = {
     creategroup,
     getUserCreateGroup,
-    discoverGroup
+    discoverGroup,
+    deleteGroup,
+    getsinglegroup
 }
